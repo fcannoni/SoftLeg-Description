@@ -14,7 +14,8 @@ def generate_launch_description():
 
     # path for build softleg urdf
     softleg_robot_path = get_package_share_path("softleg_description")
-    softleg_robot_path = os.path.join(softleg_robot_path, "urdf", "softlegisaac.urdf")
+    softleg_robot_path = os.path.join(softleg_robot_path, "urdf", "softlegisaacFC.urdf")
+    print(softleg_robot_path)
     # softleg_robot_path = os.path.join(softleg_robot_path, "urdf", "softleg.xacro") 
     # path for rviz settings
     rviz_config_path = get_package_share_path("softleg_description")
@@ -44,11 +45,11 @@ def generate_launch_description():
     )
     print(robot_description)
 
-    # node declaration
+    # # node declaration
     robot_state_pub = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        parameters=[{'robot_description': softleg_model}]
+        parameters=[{'robot_description': robot_description}]
     )
 
     robot_joint_pub = Node(
@@ -78,7 +79,7 @@ def generate_launch_description():
             use_gui,
             rviz_node,
             robot_joint_pub,
-            # robot_joint_pub_gui,
+            robot_joint_pub_gui,
             robot_state_pub
         ]
     )
