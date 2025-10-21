@@ -42,7 +42,7 @@ def create_yaml(context: LaunchContext, robot_name,joystic_teleop):  #non serve 
             executable="parameter_bridge",
             arguments=[
                 [robot_name_str+"/", "imu@sensor_msgs/msg/Imu[ignition.msgs.IMU"],
-                # [robot_name,"gt_odom@nav_msgs/msg/Odometry@ignition.msgs.Odometry"],
+                ["/gino","height_measure@nav_msgs/msg/Odometry@ignition.msgs.Odometry"],
                 "/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock",
                 [robot_name_str+"/","rgl_lidar@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked"],
                 # "/rgbd_camera/image@sensor_msgs/msg/Image@ignition.msgs.Image",
@@ -209,6 +209,20 @@ def generate_launch_description():  #here delete opawe_fun 200
     )
 
     ld.add_action(joy_node)
+    bridge = Node(
+            package="ros_gz_bridge",
+            executable="parameter_bridge",
+            arguments=[
+                "height_measure@nav_msgs/msg/Odometry@ignition.msgs.Odometry",
+                "/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock",
+                # "/rgbd_camera/image@sensor_msgs/msg/Image@ignition.msgs.Image",
+                # "/rgbd_camera/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo",
+                # "/rgbd_camera/depth_image@sensor_msgs/msg/Image@ignition.msgs.Image",
+                # "/rgbd_camera/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked"
+            ],
+            output="screen",
+            )
+    ld.add_action(bridge)
     # teleop_node = Node(
     #     package="teleop_twist_joy",
     #     executable="teleop_node",

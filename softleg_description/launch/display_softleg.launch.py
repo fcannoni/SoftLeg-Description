@@ -14,7 +14,7 @@ def generate_launch_description():
 
     # path for build softleg urdf
     softleg_robot_path = get_package_share_path("softleg_description")
-    softleg_robot_path = os.path.join(softleg_robot_path, "urdf", "softlegisaacFC.urdf")
+    softleg_robot_path = os.path.join(softleg_robot_path, "urdf", "softleg_FC.urdf")
     print(softleg_robot_path)
     # softleg_robot_path = os.path.join(softleg_robot_path, "urdf", "softleg.xacro") 
     # path for rviz settings

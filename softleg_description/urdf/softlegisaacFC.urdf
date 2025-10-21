@@ -176,6 +176,17 @@
       <material>Gazebo/White</material>
   </gazebo> -->
   <gazebo>
+  <!-- Odometry Publisher -->
+                <plugin
+            filename="ignition-gazebo-odometry-publisher-system"
+            name="ignition::gazebo::systems::OdometryPublisher">
+            <dimensions>3</dimensions>
+            <odom_publish_frequency>300</odom_publish_frequency>
+            <odom_frame>world</odom_frame>
+            <robot_base_frame>softleg_1_ball_pseudo_link</robot_base_frame>
+            <odom_topic>height_measure</odom_topic>
+            <tf_topic>height_measure</tf_topic>
+        </plugin>
     <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
         <parameters>/home/ros/docker_simulation_ws/install/softleg_description/share/softleg_description/config/softleg_gazebo_sim_jnt_PD.yaml</parameters>    <!--  remember to change it -->
         <!--<parameters>/home/francesco/docker_ros_nvidia/src/softleg_gazebo/config/softleg_gazebo_FeedForwardPos.yaml</parameters> --> 

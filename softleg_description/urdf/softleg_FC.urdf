@@ -1,0 +1,152 @@
+<?xml version="1.0"?>
+<robot name="softlegisaac">
+<link name="world"/>
+  <joint name="fixed" type="fixed">
+      <origin xyz="0. 0. 0.02" rpy="1.57 0. 0."/>
+      <parent link="world"/>
+      <child link="softleg_1_cart_link"/>
+  </joint>
+  <joint name="softleg_1_cart_joint" type="prismatic">
+      <origin xyz="0. 0.2102 0. " rpy="0.0 0.0 0.0 "/>
+      <!-- <origin xyz="0. 0.2102 0. " rpy="0.0 0.0 3.14 "/> -->
+      <parent link="softleg_1_cart_link"/>
+      <child link="softleg_1_base_link"/>
+      <axis xyz="0 1 0"/>
+      <joint_properties damping=".0" friction="0.4"/>
+      <limit lower="0.0" upper="2.0" effort="0." velocity="300."/>
+  </joint>
+  <joint name="softleg_1_ball_pseudo_joint" type="fixed">
+    <origin xyz="0.072 0.0507 -0.0164 " rpy="0. 0. 0. "/>
+    <parent link="softleg_1_base_link"/>
+    <child link="softleg_1_ball_pseudo_link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-3.1415927" upper="3.1415927" effort="11." velocity="100."/>
+    </joint>
+  
+
+  
+  <joint name="softleg_1_knee_joint" type="revolute">
+    <origin xyz="0.0 -0.19 -0.0498 " rpy="0. 0. 0. "/>
+    <parent link="softleg_1_thigh_link"/>
+    <child link="softleg_1_calf_link"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-3.1415927" upper="3.1415927" effort="11." velocity="100."/>
+  </joint> 
+
+  <joint name="softleg_1_hip_joint" type="revolute">
+    <origin xyz="0.0 -0.19 -0.0498 " rpy="0. 0.0 -1.57 "/>
+    <parent link="softleg_1_base_link"/>
+    <child link="softleg_1_thigh_link"/>
+    <axis xyz="0 0 -1"/>
+    <limit lower="-3.1415927" upper="3.1415927" effort="11." velocity="100."/>
+  </joint>
+
+ <link name="softleg_1_base_link">
+    <inertial>
+      <origin xyz="0. 0. 0." rpy="0. 0. 0.0"/>
+      <mass value="1.2642768"/> 
+      <inertia ixx="1.0129150e-02" ixy="-1.2788286e-05" ixz="-1.8432118e-05" iyy="1.9134757e-03" iyz="-1.4317404e-03" izz="9.9843305e-03"/>
+    </inertial>
+    <visual>
+      <origin xyz="0. 0. 0." rpy="0. 0. 0."/>
+      <geometry>
+      <mesh filename="package://softleg_description/meshes/hip.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+    <origin xyz="0.0 0.0 0.0 " rpy="0. 0. 0.0"/>
+      <geometry>
+        <mesh filename="package://softleg_description/meshes/hip.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+   
+    </collision>
+  </link> 
+
+  <link name="softleg_1_ball_pseudo_link">
+    <inertial>
+      <origin xyz="0. 0. 0." rpy="0. 0. 0."/>
+      <mass value="0.001"/>
+      <inertia ixx="0.0001" ixy="0.0" ixz="0.0" iyy="0.0001" iyz="0" izz="0.0001"/>
+    </inertial>
+    <visual>
+      <origin xyz="0. 0. 0. " rpy="0. 0. 0."/>
+      <geometry>
+        <sphere radius="0.0095" />
+      </geometry>
+      <material name="gino">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+    <origin xyz="0. 0. 0. " rpy="0. 0. 0."/>
+      <geometry>
+        <sphere radius="0.0095"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <link name="softleg_1_calf_link">
+    <inertial>
+      <origin xyz="0. 0. 0." rpy="0. 0. 0."/>
+      <mass value="9.1088559e-02"/>
+      <inertia ixx="7.3660432e-04" ixy="7.8245712e-09" ixz="1.9809329e-09" iyy="4.1085061e-05" iyz="-1.2377630e-04" izz="7.1489058e-04"/>
+    </inertial>
+    <visual>
+      <origin xyz="0. 0. 0." rpy="0. 0. 0. "/>
+      <geometry>
+        <mesh filename="package://softleg_description/meshes/lower_leg_update.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+     <collision>
+    <origin xyz="0.0 0. 0." rpy="0. 0 0. "/>
+      <geometry>
+        <sphere radius="0.015"/>
+      </geometry>
+  
+    </collision> 
+
+  </link>
+
+  <link name="softleg_1_cart_link">
+    <inertial>
+      <origin xyz="0. 0.0 0." rpy="0. 0. 0."/>
+      <mass value="40000000000000"/>
+      <inertia ixx="7.8849610e-03" ixy="-1.2902140e-05" ixz="-2.5530569e-06" iyy="9.8307563e-04" iyz="-1.6230231e-03" izz="7.1995637e-03"/>
+    </inertial>
+    <visual>
+      <origin xyz="0. 0. 0." rpy="0. 0. 0.0"/>
+      <geometry>
+        <mesh filename="package://softleg_description/meshes/sxr28_1000_r.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    <collision>
+        <origin xyz="0. 0. 0." rpy="0. 0. 0.0"/>
+      <geometry>
+        <mesh filename="package://softleg_description/meshes/sxr28_1000_r.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+    </visual>
+
+  </link>
+  <link name="softleg_1_thigh_link">
+    <inertial>
+      <origin xyz="0. 0. 0." rpy="0. 0. 0."/>
+      <mass value="5.9301106e-01"/>
+      <inertia ixx="1" ixy="0.01" ixz="0.01" iyy="1" iyz="0.01" izz="1"/>
+    </inertial>
+    <visual>
+      <origin xyz="0. 0. 0." rpy="0. 0. 0.0"/>
+      <geometry>
+        <mesh filename="package://softleg_description/meshes/knee.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </visual>
+    <collision>
+    <origin xyz="0. 0. 0." rpy="0. 0. 0.0"/>
+      <geometry>
+        <mesh filename="package://softleg_description/meshes/knee.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+    </collision>
+  </link> 
+
+
+
+</robot>
