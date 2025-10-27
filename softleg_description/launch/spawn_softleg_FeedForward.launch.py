@@ -15,7 +15,7 @@ from launch_ros.parameter_descriptions import ParameterValue
 def create_yaml(context: LaunchContext, robot_name,joystic_teleop):  #non serve tutto, ma parzialmente. Io uso unico robot
     robot_name_str = context.perform_substitution(robot_name)
     if(robot_name_str != ""):  
-        path = os.path.join(get_package_share_path("softleg_description"),"config", "softleg_gazebo_sim_jnt_PD.yaml")
+        path = os.path.join(get_package_share_path("softleg_description"),"config", "softleg_gazebo_FeedForwardPos.yaml")
         with open(path) as stream:
             param_str = stream.read()
             print(type(param_str))
@@ -42,7 +42,7 @@ def create_yaml(context: LaunchContext, robot_name,joystic_teleop):  #non serve 
             executable="parameter_bridge",
             arguments=[
                 [robot_name_str+"/", "imu@sensor_msgs/msg/Imu[ignition.msgs.IMU"],
-                ["/ball_link","height_measure@nav_msgs/msg/Odometry@ignition.msgs.Odometry"],
+                ["/gino","height_measure@nav_msgs/msg/Odometry@ignition.msgs.Odometry"],
                 "/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock",
                 [robot_name_str+"/","rgl_lidar@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked"],
                 # "/rgbd_camera/image@sensor_msgs/msg/Image@ignition.msgs.Image",
@@ -82,10 +82,10 @@ def create_yaml(context: LaunchContext, robot_name,joystic_teleop):  #non serve 
             executable="spawner",
             arguments=["joint_state_broadcaster", "--controller-manager", f"/{robot_name_str}/controller_manager"],
             )  
-        diff_drive_control = Node(
+        position_controller = Node(
             package="controller_manager",
             executable="spawner",
-            arguments=["PD_control", "--controller-manager",f"/{robot_name_str}/controller_manager"],
+            arguments=["position_controller", "--controller-manager",f"/{robot_name_str}/controller_manager"],
             ) 
     else:
         joint_state_broadcaster = Node(
@@ -93,12 +93,12 @@ def create_yaml(context: LaunchContext, robot_name,joystic_teleop):  #non serve 
             executable="spawner",
             arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
             )  
-        diff_drive_control = Node(
+        position_controller = Node(
             package="controller_manager",
             executable="spawner",
-            arguments=["PD_control", "--controller-manager", "/controller_manager"],
+            arguments=["position_controller", "--controller-manager", "/controller_manager"],
             )  
-    return [teleop_node,bridge,joint_state_broadcaster,diff_drive_control]
+    return [teleop_node,bridge,joint_state_broadcaster,position_controller]
 
 
 def generate_launch_description():  #here delete opawe_fun 200
@@ -172,15 +172,13 @@ def generate_launch_description():  #here delete opawe_fun 200
     robot_state_pub = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        namespace=robot_name,
-        parameters=[{'robot_description': robot_description},{'publish_frequency': 300.0},{'use_sim_time': True}],
+        parameters=[{'robot_description': robot_description, 'use_sim_time': True}]
     )
     ld.add_action(robot_state_pub)
 
     spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
-        namespace=robot_name,
         output="screen",
         arguments=[
             "-name",
@@ -231,14 +229,14 @@ def generate_launch_description():  #here delete opawe_fun 200
         arguments=["joint_state_broadcaster", "--controller-manager", "/controller_manager"],
     )
     
-    PD_control_spawner = Node(
+    position_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["PD_control", "--controller-manager", "/controller_manager"],
+        arguments=["position_controller", "--controller-manager", "/controller_manager"],
     )
     
     ld.add_action(joint_state_broadcaster_spawner)
-    ld.add_action(PD_control_spawner)
+    ld.add_action(position_controller_spawner)
     
     # teleop_node = Node(
     #     package="teleop_twist_joy",

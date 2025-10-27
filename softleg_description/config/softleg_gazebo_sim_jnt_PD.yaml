@@ -1,6 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 1000 # Hz
+    update_rate: 1000 # Hz - Match Gazebo simulation rate ... I would it higher 
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -13,20 +13,14 @@ PD_control:
       - softleg_1_hip_joint
       - softleg_1_knee_joint
     K_d:
-      - 6. # Nm/rad
-      - 6.
-      #- 5.  #doppio 5 est buono
-      #- 5.0     
+      - 3.0  # 30 is good
+      - 0.17  # Restore damping for knee joint     
     K_p: 
-      - 60.
-      - 60.
-      # - 20.0  # doppio 20 est buono
-      #- 20.0
-      # - 70.903527147
-      # - 70.903527147
+      - 100.0  # 200 is good
+      - 7.0
     init_pos:
-      - -0.
-      - -0.
+      - 0.0
+      - 0.0
     use_sim_time: True
 
 joint_state_broadcaster:

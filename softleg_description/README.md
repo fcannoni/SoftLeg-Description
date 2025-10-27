@@ -14,3 +14,13 @@ To visualize and debug the robot description, start the standalone visualization
 ```shell
 ros2 launch mulinex_description display_mulinex.launch.py
 ```
+
+
+## Simulation
+
+Start a gazebo enviroment and spawn the robot:
+-ign gazebo empty.sdf
+-ros2 launch /home/ros/docker_simulation_ws/src/SoftLeg-Description/softleg_description/launch/spawn_softleg.launch.py
+
+Then luanch the controller, choose which one depending by the controller and the sim/real application:
+- ros2 run /home/ros/docker_simulation_ws/src/rlg_quad_controller/launch/limitcycle_simulation.launch.py

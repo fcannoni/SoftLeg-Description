@@ -6,8 +6,8 @@
       <parent link="world"/>
       <child link="softleg_1_cart_link"/>
   </joint>
-  <joint name="softleg_1_cart_joint" type="prismatic">
-      <origin xyz="0. 0.2102 0. " rpy="0.0 0.0 0.0 "/>
+  <joint name="softleg_1_cart_joint" type="fixed">
+      <origin xyz="0. 0.60 0. " rpy="0.0 0.0 0.0 "/>
       <!-- <origin xyz="0. 0.2102 0. " rpy="0.0 0.0 3.14 "/> -->
       <parent link="softleg_1_cart_link"/>
       <child link="softleg_1_base_link"/>
@@ -29,7 +29,7 @@
     <parent link="softleg_1_thigh_link"/>
     <child link="softleg_1_calf_link"/>
     <axis xyz="0 0 -1"/>
-    <limit lower="-3.1415927" upper="3.1415927" effort="11." velocity="100."/>
+    <limit lower="-3.1415927" upper="3.1415927" effort="150." velocity="300."/>
   </joint> 
 
   <joint name="softleg_1_hip_joint" type="revolute">
@@ -37,7 +37,7 @@
     <parent link="softleg_1_base_link"/>
     <child link="softleg_1_thigh_link"/>
     <axis xyz="0 0 -1"/>
-    <limit lower="-3.1415927" upper="3.1415927" effort="11." velocity="100."/>
+    <limit lower="-3.1415927" upper="3.1415927" effort="150." velocity="300."/>
   </joint>
 
   <joint name="softleg_1_ankle_joint" type="fixed">
@@ -45,7 +45,7 @@
     <parent link="softleg_1_calf_link"/>
     <child link="softleg_1_foot_link"/>
     <axis xyz="1 0 0"/>
-    <limit lower="-3.1415927" upper="3.1415927" effort="11." velocity="100."/>
+    <limit lower="-3.1415927" upper="3.1415927" effort="150." velocity="100."/>
     </joint>
 
  <link name="softleg_1_base_link">
@@ -137,7 +137,7 @@
   <link name="softleg_1_thigh_link">
     <inertial>
       <origin xyz="0. 0. 0." rpy="0. 0. 0."/>
-      <mass value="5.9301106e-01"/> 
+      <mass value="5.9301106e-01"/>
       <inertia ixx="7.8849610e-03" ixy="-1.2902140e-05" ixz="-2.5530569e-06" iyy="9.8307563e-04" iyz="-1.6230231e-03" izz="7.1995637e-03"/>
     </inertial>
     <visual>
@@ -180,29 +180,19 @@
 
   <gazebo>
   <!-- Odometry Publisher -->
-              <plugin
+                <plugin
             filename="ignition-gazebo-odometry-publisher-system"
             name="ignition::gazebo::systems::OdometryPublisher">
             <dimensions>3</dimensions>
             <odom_publish_frequency>300</odom_publish_frequency>
-            <odom_frame>gt_odom</odom_frame>
+            <odom_frame>softlegisaac/world</odom_frame>
             <robot_base_frame>softleg_1_ball_pseudo_link</robot_base_frame>
             <odom_topic>height_measure</odom_topic>
             <tf_topic>height_measure</tf_topic>
         </plugin>
-        <plugin
-            filename="ignition-gazebo-odometry-publisher-system"
-            name="ignition::gazebo::systems::OdometryPublisher">
-            <dimensions>3</dimensions>
-            <odom_publish_frequency>300</odom_publish_frequency>
-            <odom_frame>gt_odom</odom_frame>
-            <robot_base_frame>softleg_1_foot_link</robot_base_frame>
-            <odom_topic>foot_position</odom_topic>
-            <tf_topic>foot_position</tf_topic>
-        </plugin>
     <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-        <parameters>/home/ros/docker_simulation_ws/install/softleg_description/share/softleg_description/config/softleg_gazebo_sim_jnt_PD.yaml</parameters>    <!--  remember to change it -->
-        <!--<parameters>/home/francesco/docker_ros_nvidia/src/softleg_gazebo/config/softleg_gazebo_FeedForwardPos.yaml</parameters> --> 
+        <parameters>/home/ros/docker_simulation_ws/install/softleg_description/share/softleg_description/config/softleg_gazebo_sim_jnt_PD.yaml</parameters>    <!--  PD controller configuration -->
+        <!--<parameters>/home/ros/docker_simulation_ws/install/softleg_description/share/softleg_description/config/softleg_gazebo_FeedForwardPos.yaml</parameters> --> 
     </plugin>
   </gazebo>
   <ros2_control name="IgnitionSystem" type="system">

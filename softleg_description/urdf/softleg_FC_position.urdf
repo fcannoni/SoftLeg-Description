@@ -137,8 +137,8 @@
   <link name="softleg_1_thigh_link">
     <inertial>
       <origin xyz="0. 0. 0." rpy="0. 0. 0."/>
-      <mass value="5.9301106e-01"/> 
-      <inertia ixx="7.8849610e-03" ixy="-1.2902140e-05" ixz="-2.5530569e-06" iyy="9.8307563e-04" iyz="-1.6230231e-03" izz="7.1995637e-03"/>
+      <mass value="5.9301106e-01"/>
+      <inertia ixx="1" ixy="0.01" ixz="0.01" iyy="1" iyz="0.01" izz="1"/>
     </inertial>
     <visual>
       <origin xyz="0. 0. 0." rpy="0. 0. 0.0"/>
@@ -180,12 +180,12 @@
 
   <gazebo>
   <!-- Odometry Publisher -->
-              <plugin
+                <plugin
             filename="ignition-gazebo-odometry-publisher-system"
             name="ignition::gazebo::systems::OdometryPublisher">
             <dimensions>3</dimensions>
             <odom_publish_frequency>300</odom_publish_frequency>
-            <odom_frame>gt_odom</odom_frame>
+            <odom_frame>world</odom_frame>
             <robot_base_frame>softleg_1_ball_pseudo_link</robot_base_frame>
             <odom_topic>height_measure</odom_topic>
             <tf_topic>height_measure</tf_topic>
@@ -195,14 +195,14 @@
             name="ignition::gazebo::systems::OdometryPublisher">
             <dimensions>3</dimensions>
             <odom_publish_frequency>300</odom_publish_frequency>
-            <odom_frame>gt_odom</odom_frame>
+            <odom_frame>world</odom_frame>
             <robot_base_frame>softleg_1_foot_link</robot_base_frame>
             <odom_topic>foot_position</odom_topic>
             <tf_topic>foot_position</tf_topic>
         </plugin>
     <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
-        <parameters>/home/ros/docker_simulation_ws/install/softleg_description/share/softleg_description/config/softleg_gazebo_sim_jnt_PD.yaml</parameters>    <!--  remember to change it -->
-        <!--<parameters>/home/francesco/docker_ros_nvidia/src/softleg_gazebo/config/softleg_gazebo_FeedForwardPos.yaml</parameters> --> 
+        <parameters>/home/ros/docker_simulation_ws/install/softleg_description/share/softleg_description/config/softleg_gazebo_FeedForwardPos.yaml</parameters>    <!--  position controller configuration -->
+        <!--<parameters>/home/ros/docker_simulation_ws/install/softleg_description/share/softleg_description/config/softleg_gazebo_sim_jnt_PD.yaml</parameters> --> 
     </plugin>
   </gazebo>
   <ros2_control name="IgnitionSystem" type="system">
@@ -220,7 +220,7 @@
                 <state_interface name="effort" />
       </joint>     
       <joint name="softleg_1_hip_joint">
-              <command_interface name="effort" />
+              <command_interface name="position" />
               <state_interface name="position">
                   <param name="initial_value">-0.0</param>
               </state_interface>
@@ -230,7 +230,7 @@
               <state_interface name="effort" />
       </joint>
       <joint name="softleg_1_knee_joint">
-                <command_interface name="effort" />
+                <command_interface name="position" />
                 <state_interface name="position">
                     <param name="initial_value">-0.0</param>
                 </state_interface>
